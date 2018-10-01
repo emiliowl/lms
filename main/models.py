@@ -34,7 +34,7 @@ class Disciplina(models.Model):
     bibliografia_complementar = models.TextField(max_length=1000)
     percentual_pratico = models.DecimalField(max_digits=13, decimal_places=2)
     percentual_teorico = models.DecimalField(max_digits=13, decimal_places=2)
-    coordenador = models.ForeignKey(Coordenador)
+    coordenador = models.ForeignKey(Coordenador, on_delete=models.PROTECT)
 
 class Curso(models.Model):
     nome = models.TextField(max_length=255, unique=True)
@@ -49,10 +49,10 @@ class DisciplinaOfertada(models.Model):
     recursos = models.TextField(max_length=255)
     criterio_avaliacao = models.TextField(max_length=1000)
     plano_aula = models.TextField(max_length=1000)
-    disciplina = models.ForeignKey(Disciplina)
-    professor = models.ForeignKey(Professor)
-    coordenador = models.ForeignKey(Coordenador)
-    curso = models.ForeignKey(Curso)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.PROTECT)
+    professor = models.ForeignKey(Professor, on_delete=models.PROTECT)
+    coordenador = models.ForeignKey(Coordenador, on_delete=models.PROTECT)
+    curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
 
     class Meta:
         unique_together = ('curso', 'disciplina', 'turma', 'ano', 'semestre')
@@ -60,9 +60,9 @@ class DisciplinaOfertada(models.Model):
 class SolicitacaoMatricula(models.Model):
     dt_solicitacao = models.DateField()
     status = models.TextField(max_length=255)
-    aluno = models.ForeignKey(Aluno)
-    disciplina = models.ForeignKey(Disciplina)
-    coordenador = models.ForeignKey(Coordenador)
+    aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.PROTECT)
+    coordenador = models.ForeignKey(Coordenador, on_delete=models.PROTECT)
 
 class Atividade(models.Model):
     titulo = models.TextField(max_length=255, unique=True)
@@ -70,14 +70,14 @@ class Atividade(models.Model):
     conteudo = models.TextField(max_length=255)
     tipo = models.TextField(max_length=255)
     extras = models.TextField(max_length=255)
-    professor = models.ForeignKey(Professor)
+    professor = models.ForeignKey(Professor, on_delete=models.PROTECT)
 
 class AtividadeVinculada(models.Model):
     status = models.IntegerField()
     rotulo = models.TextField(max_length=255)
-    atividade = models.ForeignKey(Atividade)
-    professor = models.ForeignKey(Professor)
-    disciplina_ofertada = models.ForeignKey(DisciplinaOfertada)
+    atividade = models.ForeignKey(Atividade, on_delete=models.PROTECT)
+    professor = models.ForeignKey(Professor, on_delete=models.PROTECT)
+    disciplina_ofertada = models.ForeignKey(DisciplinaOfertada, on_delete=models.PROTECT)
 
 class EntregaAtividade(models.Model):
     titulo = models.TextField(max_length=100)
@@ -87,9 +87,9 @@ class EntregaAtividade(models.Model):
     nota = models.IntegerField()
     dt_avaliacao = models.DateField()
     obs = models.TextField(max_length=255)
-    aluno = models.ForeignKey(Aluno)
-    atividade_vinculada = models.ForeignKey(AtividadeVinculada)
-    professor = models.ForeignKey(Professor)
+    aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    atividade_vinculada = models.ForeignKey(AtividadeVinculada, on_delete=models.PROTECT)
+    professor = models.ForeignKey(Professor, on_delete=models.PROTECT)
 
 class Mensagem(models.Model):
     assunto = models.TextField(max_length=255)
@@ -99,5 +99,5 @@ class Mensagem(models.Model):
     dt_envio = models.DateField()
     dr_resposta = models.DateField()
     resposta = models.TextField(max_length=1000)
-    aluno = models.ForeignKey(Aluno)
-    professor = models.ForeignKey(Professor)
+    aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    professor = models.ForeignKey(Professor, on_delete=models.PROTECT)
